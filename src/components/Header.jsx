@@ -90,7 +90,7 @@ export const Header = () => {
                     </div>
                     {/* hospital image */}
                     <div className="flex justify-center items-center">
-                        <img src={assets.hospital} alt="hospital" className='w-[430px] h-[430px]' />
+                        <img src={assets.hospital} alt="hospital" className='md:w-[628px] md:h-[430px] w-[314px] h-[216px] ' />
                     </div>
             </div>
             </div>
