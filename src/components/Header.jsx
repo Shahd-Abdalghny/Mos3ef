@@ -22,7 +22,7 @@ export const Header = () => {
     return (
         <>
             <div className=' mx-auto px-4 md:px-6 lg:px-36 '>
-                <div className='flex flex-col relative items-center justify-center mt-10 lg:mt-[95px] gap-8 md:gap-18'>
+                <div className='flex flex-col  items-center justify-center mt-10 lg:mt-[95px] gap-8 md:gap-18'>
                 {/* Hero section */}
                 <div className="Hero-section flex flex-col md:flex-row items-center md:items-end justify-center gap-6 md:gap-0 [direction:rtl]">
                     <div className="font-Lemon text-Blue-900 text-3xl md:text-4xl lg:text-5xl order-1 ">
@@ -50,7 +50,7 @@ export const Header = () => {
 
                         {/* Location Button */}
                         <Button
-                            className="flex items-center p-2 md:p-3 w-[84px] h-[53px] justify-center bg-Blue hover:bg-Blue text-white rounded-3xl shadow-md transition-all ">
+                            className="flex items-center p-2 md:p-3 md:w-[84px] md:h-[53px] justify-center bg-Blue hover:bg-Blue text-white rounded-3xl shadow-md transition-all ">
                             <Map className="w-5 h-5 md:w-6 md:h-6" />
                         </Button>
                     </div>
@@ -58,7 +58,7 @@ export const Header = () => {
                     {/* Filter */}
                     {/* Filter Tags */}
                     <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full [direction:rtl]">
-                        <Button className="inline-flex items-center justify-center w-[84px]  gap-1 px-6 lg:px-8 py-2 h-[53px] bg-Blue rounded-3xl shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue/90 transition-colors">
+                            <Button className="inline-flex items-center justify-center md:w-[84px] md:h-[53px]  gap-1 px-6 lg:px-8 py-2  bg-Blue rounded-3xl shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue/90 transition-colors">
                             <FilterIcon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </Button>
                         {filterTags.map((tag) => (
@@ -90,7 +90,7 @@ export const Header = () => {
                     </div>
                     {/* hospital image */}
                     <div className="flex justify-center items-center">
-                        <img src={assets.hospital} alt="hospital" className='w-[626px] h-[429px]' />
+                        <img src={assets.hospital} alt="hospital" className='w-[430px] h-[430px]' />
                     </div>
             </div>
             </div>

@@ -5,7 +5,7 @@ import { Header } from '../../components/Header'
 export const Home = () => {
     return (
         <div
-            className="relative min-h-screen bg-cover bg-center flex flex-col items-center w-full overflow-hidden"
+            className="relative min-h-screen bg-cover bg-center flex flex-col items-center w-full "
             id="Header"
         >
             <NavBar />

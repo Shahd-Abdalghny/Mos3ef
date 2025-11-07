@@ -4,6 +4,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
+
 @theme inline {
   --color-Blue: #165A80;
   --color-Blue-900: #071E2C;
