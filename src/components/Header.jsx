@@ -57,20 +57,23 @@ export const Header = () => {
                     
                     {/* Filter */}
                     {/* Filter Tags */}
-                    <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full [direction:rtl]">
+                    <div className="flex   gap-2 md:gap-3 w-full [direction:rtl]">
                             <Button className="inline-flex items-center justify-center md:w-[84px] md:h-[53px]  gap-1 px-6 lg:px-8 py-2  bg-Blue rounded-3xl shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue/90 transition-colors">
                             <FilterIcon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </Button>
+                            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 w-full [direction:rtl]">
+
                         {filterTags.map((tag) => (
                             <Badge
-                                key={tag.value}
-                                className="inline-flex items-center justify-center gap-1 px-4 md:px-6 lg:px-8 py-2 h-auto bg-Blue-200 rounded-3xl overflow-hidden shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue-200/90 transition-colors cursor-pointer"
+                            key={tag.value}
+                            className="inline-flex items-center justify-center gap-1 px-4 md:px-6 lg:px-8 py-2 h-auto bg-Blue-200 rounded-3xl overflow-hidden shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue-200/90 transition-colors cursor-pointer"
                             >
                                 <div className="font-Cairo text-Blue-900 text-sm md:text-base lg:text-xl [direction:rtl] whitespace-nowrap">
                                     {tag.label}
                                 </div>
                             </Badge>
                         ))}
+                        </div>
                     </div>
                 </div>
                     {/* Action Buttons */}
