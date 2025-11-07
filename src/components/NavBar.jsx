@@ -3,9 +3,9 @@ import { assets } from '../assets/assets'
 import { MenuIcon, XIcon } from "lucide-react";
 
 const navItems = [
-    { label: "من نحن", href: "#about" },
-    { label: "خدماتنا", href: "#services" },
     { label: "الرئيسية", href: "#home", active: true },
+    { label: "خدماتنا", href: "#services" },
+    { label: "من نحن", href: "#about" },
 ];
 
 export const NavBar = () => {
@@ -29,7 +29,7 @@ export const NavBar = () => {
                     </div>
 
                     {/* ----------Desktop Nav---------- */}
-                    <ul className="hidden md:flex items-center justify-center gap-6 px-12 py-3 bg-Blue-900 rounded-[84px]">
+                    <ul className="hidden md:flex items-center justify-center gap-6 px-12 py-3 bg-Blue-900 rounded-[84px]  [direction:rtl]">
                         {navItems.map((item, index) => (
                             <li
                                 key={index}
@@ -62,7 +62,7 @@ export const NavBar = () => {
 
                 {/* ----------Mobile Menu (Slide from right)--------- */}
                 <div
-                    className={`fixed top-0 right-0 h-screen w-[70%] sm:w-[50%] bg-Blue-900 z-[9999] transform transition-transform duration-500 ease-in-out 
+                    className={` fixed top-0 right-0 h-screen w-[70%] sm:w-[50%] bg-Blue-900 z-[9999] transform transition-transform duration-500 ease-in-out 
                     ${showMobileMenue ? "translate-x-0" : "translate-x-full"}`}
                 >
                     <div className='flex justify-end p-6 cursor-pointer'>
@@ -76,7 +76,7 @@ export const NavBar = () => {
                             <li key={index}>
                                 <a
                                     href={item.href}
-                                    className='px-4 py-2 rounded-full inline-block text-Blue-50'
+                                    className='px-4 py-2 rounded-full inline-block text-Blue-50 font-Cairo  [direction:rtl]'
                                     onClick={() => setShowMobileMenue(false)}
                                 >
                                     {item.label}
