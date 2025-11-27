@@ -7,18 +7,18 @@ import {
   MailIcon,
   UserIcon,
 } from "lucide-react";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { InputFeild } from "../../components/InputFeild";
 import { LoginImageSection } from "../../components/LoginImageSection";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../../Context/AuthContext";
+import { useAuth } from "../../hooks/useAuth.js";
 import { useNavigate } from "react-router-dom";
 export const LogIn = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const {
