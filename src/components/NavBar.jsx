@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import { MenuIcon, XIcon } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const navItems = [
-    { label: "الرئيسية", href: "#home", active: true },
+    { label: "الرئيسية", href: "/", active: true },
     { label: "خدماتنا", href: "#services" },
     { label: "من نحن", href: "#about" },
 ];
@@ -35,22 +36,22 @@ export const NavBar = () => {
                                 key={index}
                                 className={`inline-flex items-center justify-center gap-1 px-6 py-2 h-auto rounded-3xl overflow-hidden ${item.active ? "bg-Blue" : "bg-Blue-900"} shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue transition-colors`}
                             >
-                                <a href={item.href} className='cursor-pointer font-Cairo text-Blue-50'>
+                                <Link to={item.href} className='cursor-pointer font-Cairo text-Blue-50'>
                                     {item.label}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
 
                     {/* ----------Desktop Buttons---------- */}
                     <div className="hidden md:flex items-center gap-2">
-                        <div className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
-                            <div className="font-Cairo text-Blue-900 text-xl">دخول</div>
-                        </div>
+                        <button   className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
+                            <Link to="/LogIn" className="font-Cairo text-Blue-900 text-xl">دخول</Link>
+                        </button>
                         <div className="text-[#5a9648] text-xl">|</div>
-                        <div className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
-                            <div className="font-Cairo text-Blue-900 text-xl">تسجيل</div>
-                        </div>
+                        <button className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
+                            <Link className="font-Cairo text-Blue-900 text-xl" to="/SignUp">تسجيل</Link>
+                        </button>
                     </div>
 
                     {/* ----------Menu Icon---------- */}
@@ -62,7 +63,7 @@ export const NavBar = () => {
 
                 {/* ----------Mobile Menu (Slide from right)--------- */}
                 <div
-                    className={` fixed top-0 right-0 h-screen w-[70%] sm:w-[50%] bg-Blue-900 z-[9999] transform transition-transform duration-500 ease-in-out 
+                    className={` fixed top-0 right-0 h-screen w-[70%] sm:w-[50%] bg-Blue-900 z-9999 transform transition-transform duration-500 ease-in-out 
                     ${showMobileMenue ? "translate-x-0" : "translate-x-full"}`}
                 >
                     <div className='flex justify-end p-6 cursor-pointer'>
