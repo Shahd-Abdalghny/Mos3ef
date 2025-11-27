@@ -13,85 +13,97 @@ export const NavBar = () => {
     const [showMobileMenue, setShowMobileMenue] = useState(false);
 
     return (
-        <>
-            <div className="fixed top-0 left-0 w-full z-50 shadow-[inset_0px_0px_22px_#f2f2f280] backdrop-blur-[10px]">
-                <div className='flex mx-auto justify-between items-center px-4 md:px-8 lg:px-[156px] py-3'>
-
-                    {/* ----------Logo---------- */}
-                    <div className="flex items-center gap-2">
-                        <img
-                            className="w-8 h-8 md:w-[46px] md:h-11"
-                            alt="Logo"
-                            src={assets.logo}
-                        />
-                        <div className="font-Lateef text-Blue-900 text-lg md:text-3xl font-bold">
-                            مسعف
-                        </div>
-                    </div>
-
-                    {/* ----------Desktop Nav---------- */}
-                    <ul className="hidden md:flex items-center justify-center gap-6 px-12 py-3 bg-Blue-900 rounded-[84px]  [direction:rtl]">
-                        {navItems.map((item, index) => (
-                            <li
-                                key={index}
-                                className={`inline-flex items-center justify-center gap-1 px-6 py-2 h-auto rounded-3xl overflow-hidden ${item.active ? "bg-Blue" : "bg-Blue-900"} shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue transition-colors`}
-                            >
-                                <Link to={item.href} className='cursor-pointer font-Cairo text-Blue-50'>
-                                    {item.label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* ----------Desktop Buttons---------- */}
-                    <div className="hidden md:flex items-center gap-2">
-                        <button   className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
-                            <Link to="/LogIn" className="font-Cairo text-Blue-900 text-xl">دخول</Link>
-                        </button>
-                        <div className="text-[#5a9648] text-xl">|</div>
-                        <button className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
-                            <Link className="font-Cairo text-Blue-900 text-xl" to="/SignUp">تسجيل</Link>
-                        </button>
-                    </div>
-
-                    {/* ----------Menu Icon---------- */}
-                    <MenuIcon
-                        className="md:hidden w-7 cursor-pointer"
-                        onClick={() => setShowMobileMenue(true)}
-                    />
-                </div>
-
-                {/* ----------Mobile Menu (Slide from right)--------- */}
-                <div
-                    className={` fixed top-0 right-0 h-screen w-[70%] sm:w-[50%] bg-Blue-900 z-9999 transform transition-transform duration-500 ease-in-out 
-                    ${showMobileMenue ? "translate-x-0" : "translate-x-full"}`}
-                >
-                    <div className='flex justify-end p-6 cursor-pointer'>
-                        <XIcon
-                            className='w-6 text-Blue-50'
-                            onClick={() => setShowMobileMenue(false)}
-                        />
-                    </div>
-                    <ul className='flex flex-col items-center gap-4 mt-5 px-5 text-lg font-medium'>
-                        {navItems.map((item, index) => (
-                            <li key={index}>
-                                <a
-                                    href={item.href}
-                                    className='px-4 py-2 rounded-full inline-block text-Blue-50 font-Cairo  [direction:rtl]'
-                                    onClick={() => setShowMobileMenue(false)}
-                                >
-                                    {item.label}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                    <div className="flex items-center gap-2 justify-center mt-8">
-                        <div className="font-Cairo text-Blue-50 text-xl">دخول</div>
-                        <div className="text-Green text-xl">|</div>
-                        <div className="font-Cairo text-Blue-50 text-xl">تسجيل</div>
-                    </div>
-                </div>
+      <>
+        <div className="fixed top-0 left-0 w-full z-50 shadow-[inset_0px_0px_22px_#f2f2f280] backdrop-blur-[10px]">
+          <div className="flex mx-auto justify-between items-center px-4 md:px-8 lg:px-[156px] py-3">
+            {/* ----------Logo---------- */}
+            <div className="flex items-center gap-2">
+              <img
+                className="w-8 h-8 md:w-[46px] md:h-11"
+                alt="Logo"
+                src={assets.logo}
+              />
+              <div className="font-Lateef text-Blue-900 text-lg md:text-3xl font-bold">
+                مسعف
+              </div>
             </div>
-        </>
-    )
+
+            {/* ----------Desktop Nav---------- */}
+            <ul className="hidden md:flex items-center justify-center gap-6 px-12 py-3 bg-Blue-900 rounded-[84px]  [direction:rtl]">
+              {navItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={`inline-flex items-center justify-center gap-1 px-6 py-2 h-auto rounded-3xl overflow-hidden ${
+                    item.active ? "bg-Blue" : "bg-Blue-900"
+                  } shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue transition-colors`}
+                >
+                  <Link
+                    to={item.href}
+                    className="cursor-pointer font-Cairo text-Blue-50"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* ----------Desktop Buttons---------- */}
+            <div className="hidden md:flex items-center gap-2">
+              <button className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
+                <Link to="/LogIn" className="font-Cairo text-Blue-900 text-xl">
+                  دخول
+                </Link>
+              </button>
+              <div className="text-[#5a9648] text-xl">|</div>
+              <button className="inline-flex items-center justify-center gap-1 p-2 h-auto rounded-3xl border border-solid border-Blue-900 bg-transparent hover:bg-Blue-900/10 transition-colors">
+                <Link className="font-Cairo text-Blue-900 text-xl" to="/SignUp">
+                  تسجيل
+                </Link>
+              </button>
+            </div>
+
+            {/* ----------Menu Icon---------- */}
+            <MenuIcon
+              className="md:hidden w-7 cursor-pointer"
+              onClick={() => setShowMobileMenue(true)}
+            />
+          </div>
+
+          {/* ----------Mobile Menu (Slide from right)--------- */}
+          <div
+            className={` fixed top-0 right-0 h-screen w-[70%] sm:w-[50%] bg-Blue-900 z-9999 transform transition-transform duration-500 ease-in-out 
+                    ${showMobileMenue ? "translate-x-0" : "translate-x-full"}`}
+          >
+            <div className="flex justify-end p-6 cursor-pointer">
+              <XIcon
+                className="w-6 text-Blue-50"
+                onClick={() => setShowMobileMenue(false)}
+              />
+            </div>
+            <ul className="flex flex-col items-center gap-4 mt-5 px-5 text-lg font-medium">
+              {navItems.map((item, index) => (
+                <li key={index}>
+                  <a
+                    href={item.href}
+                    className="px-4 py-2 rounded-full inline-block text-Blue-50 font-Cairo  [direction:rtl]"
+                    onClick={() => setShowMobileMenue(false)}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="flex items-center gap-2 justify-center mt-8">
+              <div className="font-Cairo text-Blue-50 text-xl">
+                <Link to="/LogIn">دخول</Link>
+              </div>
+              <div className="text-Green text-xl">|</div>
+              <div className="font-Cairo text-Blue-50 text-xl">
+                <Link to="/SignUp">تسجيل</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
 }
