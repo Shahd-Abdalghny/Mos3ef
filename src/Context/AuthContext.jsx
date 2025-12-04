@@ -1,5 +1,6 @@
+/** @format */
 
-import { createContext, useState,useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -7,65 +8,201 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
 
-  // ------------------------ Authentication Functions ------------------ //
-  // Signup Function
+  const baseUrl = "http://localhost:5000/api/";
+
+  // ------------------------ Signup Function ------------------ //
   const signup = async (data) => {
     try {
-      const res = await axios.post(
-        "https://karmen-liable-blake.ngrok-free.dev/api/Account/register/patient",
-        data
-      );
+      const res = await axios.post(`${baseUrl}Account/register/patient`, data);
       console.log(res.data);
       return { success: true };
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     }
   };
-  // Login Function
+
+  // ------------------------ Login Function ------------------ //
   const login = async (data) => {
     try {
-      const res = await axios.post(
-        "https://karmen-liable-blake.ngrok-free.dev/api/Account/login",
-        data
-      );
-      console.log(res.data);
-      const token = res.data.token;
+      const res = await axios.post(`${baseUrl}Account/login`, data);
 
+      const token = res.data.token;
+      const userType = res.data.userType; // 0 = Patient, 1 = Hospital
+
+      setRole(userType);
       localStorage.setItem("authToken", token);
-      setUser(res.data.user);
+      localStorage.setItem("userRole", userType);
+
+      // ------------------- Fetch user Profile Immediately ------------------- //
+      const profileUrl =
+        userType == 0
+          ? `${baseUrl}Patients/my-profile`
+          : `${baseUrl}Hospital/Get-profile`;
+
+      const profileRes = await axios.get(profileUrl, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const userData = {
+        ...profileRes.data,
+        imageUrl: profileRes.data.imageUrl
+          ? `http://localhost:5000${profileRes.data.imageUrl}`
+          : null,
+      };
+
+      setUser(userData);
+      console.log("Logged in user:", userData);
 
       return { success: true };
     } catch (error) {
       return { success: false, message: error.response?.data?.message };
     }
   };
-  // check if user is logged in on app load
+
+  // ------------------------ Check login on App load ------------------ //
   useEffect(() => {
-  const token = localStorage.getItem("authToken");
-  if (token) {
-    axios
-      .get(
-        "https://karmen-liable-blake.ngrok-free.dev/api/Patients/GetMyProfile",
+    const token = localStorage.getItem("authToken");
+    const storedRole = localStorage.getItem("userRole"); // 0 = Patient, 1 = Hospital
+
+    if (token && storedRole !== null) {
+      const profileUrl =
+        storedRole == "0"
+          ? `${baseUrl}Patients/my-profile`
+          : `${baseUrl}Hospital/Get-profile`;
+
+      axios
+        .get(profileUrl, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => {
+          const userData = {
+            ...res.data,
+            imageUrl: res.data.imageUrl
+              ? `http://localhost:5000${res.data.imageUrl}`
+              : null,
+          };
+          setUser(userData);
+          setRole(parseInt(storedRole));
+        })
+        .catch(() => logout());
+    }
+  }, []);
+
+  // ------------------------ Logout Function ------------------ //
+  const logout = async () => {
+    const token = localStorage.getItem("authToken");
+
+    try {
+      await axios.post(
+        `${baseUrl}Account/logout`,
+        {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      )
-      .then((res) => setUser(res.data)) 
-      .catch(() => logout()); 
-  }
-}, []);
-  // Logout Function
-  const logout = () => {
+      );
+    } catch (error) {
+      console.log("Logout API failed:", error);
+    }
+
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userRole");
     setUser(null);
+    setRole(null);
+  };
+
+  // ------------------------ Update Profile Function ------------------ //
+  const updateProfile = async (data) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const fd = new FormData();
+      fd.append("Name", data.name);
+      fd.append("Email", data.email);
+      fd.append("PhoneNumber", data.phoneNumber);
+      fd.append("Address", data.address);
+      if (data.profilePicture) fd.append("ProfilePicture", data.profilePicture);
+
+      await axios.put(`${baseUrl}Patients/my-profile`, fd, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const res = await axios.get(`${baseUrl}Patients/my-profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const userData = {
+        ...res.data,
+        imageUrl: res.data.imageUrl
+          ? `http://localhost:5000${res.data.imageUrl}`
+          : null,
+      };
+
+      setUser(userData);
+      return { success: true, updatedUser: userData };
+    } catch (err) {
+      console.log("Update profile failed:", err);
+      return {
+        success: false,
+        message: err.response?.data?.message || "حدث خطأ",
+      };
+    }
+  };
+ const changePassword = async (passwordData) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const response = await axios.post(
+      `${baseUrl}Account/change-password`,
+      {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+        confirmNewPassword: passwordData.confirmNewPassword
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    return response.data; // return success response
+  } catch (error) {
+    console.error("Change password error:", error.response?.data);
+    throw error;
+  }
+};
+  // ------------------------ Register Hospital Function ------------------ //
+  const registerHospital = async (data) => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}Account/register/hospital`,
+        data
+      );
+      console.log(response.data);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message || "حدث خطأ، حاول مرة أخرى",
+      };
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        role,
+        signup,
+        login,
+        logout,
+        updateProfile,
+        registerHospital,
+        changePassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-
-

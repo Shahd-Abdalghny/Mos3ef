@@ -159,13 +159,24 @@ export const SignUp = () => {
               </Button>
               <div className="inline-flex items-center gap-5 w-full">
                 <div className="flex-1 h-px bg-[#8e8e93]" />
-                <span className="[font-family:'Inter',Helvetica] font-light text-[#8e8e93] text-xl tracking-[0] leading-[normal] [direction:rtl]">
+                <span className="font-Cairo font-light text-[#8e8e93] text-xl tracking-[0] leading-[normal] [direction:rtl]">
                   أو
                 </span>
                 <div className="flex-1 h-px bg-[#8e8e93]" />
               </div>
 
-              <div className="flex items-center justify-center gap-1 w-full">
+                <Button
+                  type="submit"
+                  className="h-16 w-full px-8 py-1 bg-Blue-900 hover:bg-[#0a2838] rounded-[20px] overflow-hidden shadow-[0px_0px_4px_#f0d5a880] transition-colors"
+                >
+                  <Link
+                    to="/SignUp-Hospital"
+                    className="font-Cairo font-normal text-[#e9f5fb] text-xl tracking-[0] leading-[normal] [direction:rtl]"
+                  >
+                    انضم لنا كشريك طبي
+                  </Link>
+                </Button>
+              <div className="flex items-center justify-center gap-1 w-full mb-3">
                 <button className="font-Cairo font-normal text-[#1e79ae] text-sm tracking-[0] leading-5 hover:underline transition-all [direction:rtl]">
                   <Link to="/LogIn"> تسجيل الدخول</Link>
                 </button>

@@ -3,7 +3,9 @@
 @import url('https://fonts.cdnfonts.com/css/lemon-brush-arabic-personal-use-only');
 @import "tailwindcss";
 @import "tw-animate-css";
-
+/* * {
+  outline: 1px solid red;
+} */
 
 @theme inline {
   --color-Blue: #165A80;

@@ -116,13 +116,21 @@ export const LogIn = () => {
                 <div className="flex-1 h-px bg-[#8e8e93]" />
               </div>
 
-              <div className="flex items-center justify-center gap-1 w-full">
+              <div className="flex flex-col items-center justify-center gap-2 w-full">
                 <Button className="h-16 w-full px-8 py-2 border border-Blue-900 hover:bg-gray-300 rounded-[20px] overflow-hidden bg-white transition-colors">
                   <Link
                     to="/SignUp"
                     className="font-Cairo font-normal text-Blue-900 text-xl tracking-[0] leading-[normal] [direction:rtl]"
                   >
                     انشاء حساب جديد
+                  </Link>
+                </Button>
+                <Button className="h-16 w-full px-8 py-2 border border-Blue-900 hover:bg-gray-300 rounded-[20px] overflow-hidden bg-white transition-colors">
+                  <Link
+                    to="/SignUp-Hospital"
+                    className="font-Cairo font-normal text-Blue-900 text-xl tracking-[0] leading-[normal] [direction:rtl]"
+                  >
+                    انضم لنا كشريك طبي
                   </Link>
                 </Button>
               </div>
