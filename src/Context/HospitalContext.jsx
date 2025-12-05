@@ -35,35 +35,34 @@ export const HospitalProvider = ({ children }) => {
   };
 
   const deleteHospitalService = async (serviceId) => {
-     console.log("🔴 deleteHospitalService called with ID:", serviceId);
-     console.log("🔴 Service ID type:", typeof serviceId);
+    console.log("🔴 deleteHospitalService called with ID:", serviceId);
+    console.log("🔴 Service ID type:", typeof serviceId);
     try {
       if (!serviceId) {
         console.error("❌ Service ID is missing!");
-
         throw new Error("Service ID is required");
       }
 
       const token = localStorage.getItem("authToken");
       console.log("🔴 Token exists:", !!token);
       if (!token) throw new Error("No auth token found");
-       console.log(
-         "🔴 Sending DELETE request to:",
-         `${baseUrl}Hospital/DeleteService/${serviceId}`
-       );
+      console.log(
+        "🔴 Sending DELETE request to:",
+        `${baseUrl}Hospital/DeleteService/${serviceId}`
+      );
 
       const res = await axios.delete(`${baseUrl}Hospital/DeleteService/${serviceId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-    console.log("✅ Delete response:", res.data);
+      console.log("✅ Delete response:", res.data);
 
       setAlertMsg("تم حذف الخدمة بنجاح");
       setAlertType("success");
       return true;
     } catch (err) {
-       console.error("❌ Error deleting service:", err);
-       console.error("❌ Error response:", err.response?.data);
-       console.error("❌ Error status:", err.response?.status);
+      console.error("❌ Error deleting service:", err);
+      console.error("❌ Error response:", err.response?.data);
+      console.error("❌ Error status:", err.response?.status);
       setAlertMsg(err.response?.data?.message || "فشل في حذف الخدمة");
       setAlertType("error");
       throw err;
@@ -74,6 +73,8 @@ export const HospitalProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No auth token found");
+
+      console.log("🟡 Sending data to AddService API:", serviceData);
 
       const res = await axios.post(
         `${baseUrl}Hospital/AddService`,
@@ -86,11 +87,16 @@ export const HospitalProvider = ({ children }) => {
         }
       );
 
+      console.log("✅ AddService response:", res.data);
       setAlertMsg("تمت الإضافة بنجاح!");
       setAlertType("success");
       return res.data;
     } catch (error) {
-      console.log("Error adding hospital service:", error);
+      console.log("❌ Error adding hospital service:", error);
+      console.log("❌ Error response data:", error.response?.data);
+      console.log("❌ Error status:", error.response?.status);
+      console.log("❌ Error config:", error.config?.data);
+      
       setAlertMsg(error.response?.data?.message || "حدث خطأ، حاول مرة أخرى");
       setAlertType("error");
       throw error;
@@ -102,18 +108,18 @@ export const HospitalProvider = ({ children }) => {
     console.log("🟡 Service ID:", serviceId);
     console.log("🟡 Service Data:", serviceData);
     try {
-       if (!serviceId) {
-         console.error("❌ Service ID is missing for update!");
-         throw new Error("Service ID is required for update");
-       }
+      if (!serviceId) {
+        console.error("❌ Service ID is missing for update!");
+        throw new Error("Service ID is required for update");
+      }
       const token = localStorage.getItem("authToken");
-        console.log("🟡 Token exists:", !!token);
+      console.log("🟡 Token exists:", !!token);
       if (!token) throw new Error("No auth token found");
-       console.log(
-         "🟡 Sending PUT request to:",
-         `${baseUrl}Hospital/UpdateService/${serviceId}`
-       );
-       console.log("🟡 Request data:", serviceData);
+      console.log(
+        "🟡 Sending PUT request to:",
+        `${baseUrl}Hospital/UpdateService/${serviceId}`
+      );
+      console.log("🟡 Request data:", serviceData);
 
       const res = await axios.put(
         `${baseUrl}Hospital/UpdateService/${serviceId}`,
@@ -125,22 +131,21 @@ export const HospitalProvider = ({ children }) => {
           },
         }
       );
-    console.log("✅ Update response:", res.data);
+      console.log("✅ Update response:", res.data);
 
       setAlertMsg("تم تحديث الخدمة بنجاح");
       setAlertType("success");
       return res.data;
     } catch (error) {
-       console.error("❌ Error updating service:", error);
-       console.error("❌ Error response:", error.response?.data);
-       console.error("❌ Error status:", error.response?.status);
-    
+      console.error("❌ Error updating service:", error);
+      console.error("❌ Error response:", error.response?.data);
+      console.error("❌ Error status:", error.response?.status);
       setAlertMsg(error.response?.data?.message || "حدث خطأ في التحديث");
       setAlertType("error");
       throw error;
     }
   };
-
+ 
   return (
     <HospitalContext.Provider
       value={{

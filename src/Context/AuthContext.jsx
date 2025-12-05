@@ -149,6 +149,51 @@ export const AuthProvider = ({ children }) => {
       };
     }
   };
+const updateHospitalProfile = async (data) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const fd = new FormData();
+    fd.append("name", data.name);
+    fd.append("Phone_Number", data.phone_Number);
+    fd.append("address", data.address);
+    fd.append("description", data.description);
+    fd.append("opening_Hours", data.opening_Hours);
+    fd.append("website", data.website);
+    fd.append("region", data.region);
+    fd.append("latitude", data.latitude);
+    fd.append("longitude", data.longitude);
+    if (data.profileImage) fd.append("profileImage", data.profileImage);
+
+    await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const res = await axios.get(`${baseUrl}Hospital/Get-Profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const userData = {
+      ...res.data,
+      profileImage: res.data.profileImage
+        ? `http://localhost:5000${res.data.profileImage}`
+        : null,
+    };
+
+    setUser(userData);
+    return { success: true, updatedUser: userData };
+  } catch (err) {
+    console.log("Update profile failed:", err);
+    return {
+      success: false,
+      message: err.response?.data?.message || "حدث خطأ",
+    };
+  }
+};
+  
+// ---------------------------------------------------
  const changePassword = async (passwordData) => {
   try {
     const token = localStorage.getItem("authToken");
@@ -200,6 +245,7 @@ export const AuthProvider = ({ children }) => {
         updateProfile,
         registerHospital,
         changePassword,
+        updateHospitalProfile,
       }}
     >
       {children}

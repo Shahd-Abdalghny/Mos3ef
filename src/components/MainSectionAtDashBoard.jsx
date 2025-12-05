@@ -50,7 +50,7 @@ export const MainSectionAtDashBoard = () => {
               : Number(service.price) || 0;
 
           return {
-            id: service.id,
+            id: service.serviceId || service.id, // handle both serviceId and id
             name: service.name || "خدمة غير معروفة",
             price: `${priceValue} جنيه`,
             category: getCategoryName(categoryId),
@@ -64,7 +64,7 @@ export const MainSectionAtDashBoard = () => {
             icon: getIconByCategory(categoryId),
             description: service.description,
             availability: service.availability || "متاح",
-            workingHours: service.working_Hours || "24 ساعة",
+            workingHours: service.working_Hours || "24",
             categoryId: categoryId,
           };
         });
@@ -79,8 +79,8 @@ export const MainSectionAtDashBoard = () => {
     const categories = {
       1: "طوارئ",
       2: "عناية مركزة",
-      3: "حضانة أطفال",
-      4: "بنك دم",
+      17: "حضانة أطفال",
+      18: "بنك دم",
     };
     return categories[categoryId] || "طوارئ";
   };
@@ -89,8 +89,8 @@ export const MainSectionAtDashBoard = () => {
     const colors = {
       1: "bg-[#ffe2e2] text-[#c10007]",
       2: "bg-[#ffedd4] text-[#c93400]",
-      3: "bg-blue-100 text-[#1347e5]",
-      4: "bg-purple-100 text-[#8200da]",
+      17: "bg-blue-100 text-[#1347e5]",
+      18: "bg-purple-100 text-[#8200da]",
     };
     return colors[categoryId] || colors[1];
   };
@@ -99,8 +99,8 @@ export const MainSectionAtDashBoard = () => {
     const iconMap = {
       1: "https://c.animaapp.com/miks4oe9SWsilu/img/container.svg",
       2: "https://c.animaapp.com/miks4oe9SWsilu/img/container-6.svg",
-      3: "https://c.animaapp.com/miks4oe9SWsilu/img/container-4.svg",
-      4: "https://c.animaapp.com/miks4oe9SWsilu/img/container-2.svg",
+      17: "https://c.animaapp.com/miks4oe9SWsilu/img/container-4.svg",
+      18: "https://c.animaapp.com/miks4oe9SWsilu/img/container-2.svg",
     };
     return iconMap[categoryId] || iconMap[1];
   };
@@ -127,17 +127,17 @@ export const MainSectionAtDashBoard = () => {
   };
 
   const handleDeleteService = async (serviceId) => {
-     console.log("🗑️ handleDeleteService called with ID:", serviceId);
+    console.log("🗑️ handleDeleteService called with ID:", serviceId);
 
-     if (!serviceId) {
-       console.error("❌ Cannot delete: serviceId is undefined");
-       alert("لا يمكن حذف الخدمة: المعرف غير صالح");
-       return;
-     }
+    if (!serviceId) {
+      console.error("❌ Cannot delete: serviceId is undefined");
+      alert("لا يمكن حذف الخدمة: المعرف غير صالح");
+      return;
+    }
 
-     if (!window.confirm("هل أنت متأكد من حذف هذه الخدمة؟")) {
-       return;
-     }
+    if (!window.confirm("هل أنت متأكد من حذف هذه الخدمة؟")) {
+      return;
+    }
 
     try {
       console.log("🗑️ Attempting to delete service ID:", serviceId);
@@ -159,29 +159,33 @@ export const MainSectionAtDashBoard = () => {
   };
 
   const handleSaveService = async (serviceData) => {
-     console.log("📝 handleSaveService called:");
-     console.log("📝 Editing service exists:", !!editingService);
-     console.log("📝 Service data to save:", serviceData);
-      if (!serviceData.name || !serviceData.name.trim()) {
-        alert("الرجاء إدخال اسم الخدمة");
-        return;
-      }
+    console.log("📝 handleSaveService called:");
+    console.log("📝 Editing service exists:", !!editingService);
+    console.log("📝 Service data to save:", serviceData);
 
-      const price = parseInt(serviceData.price, 10);
-      if (!price || price <= 0) {
-        alert("الرجاء إدخال سعر صحيح أكبر من صفر");
-        return;
-      }
+    if (!serviceData.name || !serviceData.name.trim()) {
+      alert("الرجاء إدخال اسم الخدمة");
+      return;
+    }
+
+    const price = parseInt(serviceData.price, 10);
+    if (!price || price <= 0) {
+      alert("الرجاء إدخال سعر صحيح أكبر من صفر");
+      return;
+    }
+
     try {
-      const apiData = {
-        name: serviceData.name,
-        description: serviceData.description || "خدمة طبية متاحة داخل المستشفى",
-        price: parseInt(serviceData.price, 10) || 0,
-        availability: serviceData.availability || "متاح",
-        working_Hours: serviceData.workingHours || "24 ساعة",
-        category: serviceData.categoryId || 1,
-      };
-    console.log("📝 API Data to send:", apiData);
+     const apiData = {
+       name: serviceData.name,
+       description: serviceData.description || "خدمة طبية متاحة داخل المستشفى",
+       price: parseInt(serviceData.price, 10) || 0,
+       availability: serviceData.availability || "متاح",
+       working_Hours: serviceData.workingHours || "24", // ← صح
+       category: parseInt(serviceData.categoryId,10) || 1,
+     };
+
+
+      console.log("📝 API Data to send:", apiData);
 
       if (editingService && editingService.id) {
         console.log("📝 Updating service ID:", editingService.id);
@@ -203,13 +207,13 @@ export const MainSectionAtDashBoard = () => {
         await fetchServices();
         setAlertMsg("تم إضافة الخدمة بنجاح");
       }
-    
 
       setShowModal(false);
     } catch (error) {
       console.error("Error saving service:", error);
     }
   };
+
 
   const unavailableCount = services.filter(
     (s) => s.status === "غير متاح"
