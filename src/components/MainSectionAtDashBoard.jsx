@@ -127,10 +127,10 @@ export const MainSectionAtDashBoard = () => {
   };
 
   const handleDeleteService = async (serviceId) => {
-    console.log("🗑️ handleDeleteService called with ID:", serviceId);
+    console.log(" handleDeleteService called with ID:", serviceId);
 
     if (!serviceId) {
-      console.error("❌ Cannot delete: serviceId is undefined");
+      console.error(" Cannot delete: serviceId is undefined");
       alert("لا يمكن حذف الخدمة: المعرف غير صالح");
       return;
     }
@@ -140,28 +140,27 @@ export const MainSectionAtDashBoard = () => {
     }
 
     try {
-      console.log("🗑️ Attempting to delete service ID:", serviceId);
+      console.log(" Attempting to delete service ID:", serviceId);
 
       await deleteHospitalService(serviceId);
-      console.log("✅ Delete successful, updating UI...");
+      console.log(" Delete successful, updating UI...");
 
       setServices((prev) => {
         const newServices = prev.filter((service) => service.id !== serviceId);
-        console.log("✅ Services after delete:", newServices.length);
+        console.log(" Services after delete:", newServices.length);
         return newServices;
       });
 
-      console.log("✅ Service deleted successfully");
+      console.log(" Service deleted successfully");
     } catch (error) {
-      console.error("❌ Error in handleDeleteService:", error);
-      // الخطأ تم معالجته في context
+      console.error(" Error in handleDeleteService:", error);
     }
   };
 
   const handleSaveService = async (serviceData) => {
-    console.log("📝 handleSaveService called:");
-    console.log("📝 Editing service exists:", !!editingService);
-    console.log("📝 Service data to save:", serviceData);
+    console.log(" handleSaveService called:");
+    console.log(" Editing service exists:", !!editingService);
+    console.log(" Service data to save:", serviceData);
 
     if (!serviceData.name || !serviceData.name.trim()) {
       alert("الرجاء إدخال اسم الخدمة");
@@ -175,35 +174,32 @@ export const MainSectionAtDashBoard = () => {
     }
 
     try {
-     const apiData = {
-       name: serviceData.name,
-       description: serviceData.description || "خدمة طبية متاحة داخل المستشفى",
-       price: parseInt(serviceData.price, 10) || 0,
-       availability: serviceData.availability || "متاح",
-       working_Hours: serviceData.workingHours || "24", // ← صح
-       category: parseInt(serviceData.categoryId,10) || 1,
-     };
+      const apiData = {
+        name: serviceData.name,
+        description: serviceData.description || "خدمة طبية متاحة داخل المستشفى",
+        price: parseInt(serviceData.price, 10) || 0,
+        availability: serviceData.availability || "متاح",
+        working_Hours: serviceData.workingHours || "24",
+        category: parseInt(serviceData.categoryId, 10) || 1,
+      };
 
-
-      console.log("📝 API Data to send:", apiData);
+      console.log(" API Data to send:", apiData);
 
       if (editingService && editingService.id) {
-        console.log("📝 Updating service ID:", editingService.id);
+        console.log(" Updating service ID:", editingService.id);
         const savedService = await updateHospitalService(
           editingService.id,
           apiData
         );
-        console.log("✅ Service updated successfully:", savedService);
+        console.log(" Service updated successfully:", savedService);
 
-        // إعادة جلب جميع الخدمات للتأكد من المزامنة
         await fetchServices();
         setAlertMsg("تم تحديث الخدمة بنجاح");
       } else {
-        console.log("📝 Adding new service");
+        console.log(" Adding new service");
         const savedService = await addHospitalService(apiData);
-        console.log("✅ Service added successfully:", savedService);
+        console.log(" Service added successfully:", savedService);
 
-        // إعادة جلب جميع الخدمات
         await fetchServices();
         setAlertMsg("تم إضافة الخدمة بنجاح");
       }
@@ -213,7 +209,6 @@ export const MainSectionAtDashBoard = () => {
       console.error("Error saving service:", error);
     }
   };
-
 
   const unavailableCount = services.filter(
     (s) => s.status === "غير متاح"
