@@ -30,7 +30,14 @@ export const HospitalCard = ({ item }) => {
           }
           name={item.hospitalName}
           rating="5.0"
-          isOnline={item.availability == "available" ? true : false}
+          isOnline={
+            item.availability == "available" ||
+            item.availability == "متاح" ||
+            item.availability == "yes" ||
+            item.availability == "نعم"
+              ? true
+              : false
+          }
         />
         <div className="flex justify-end gap-4 px-2 w-full items-center">
           <Badge

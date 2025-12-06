@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -16,9 +16,13 @@ const filterTags = [
   { label: "بنك دم", value: "blood-bank", category: "BloodBank" },
 ];
 export const SearchSection = () => {
-  const { results, searchByCategory, searchByKeyword } = useSearch();
+  const { results, searchByCategory, searchByKeyword, clearResults } =
+    useSearch();
   const [keyword, setKeyword] = useState("");
   const [showMap, setShowMap] = useState(false);
+useEffect(() => {
+  clearResults();
+}, []);
 
   const handleKeywordSearch = () => {
     if (!keyword.trim()) return;

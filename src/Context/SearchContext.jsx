@@ -50,9 +50,11 @@ export const SearchProvider = ({ children }) => {
       });
 
       setResults(res.data);
+       return res.data; 
     } catch (err) {
       setError("حدث خطأ أثناء البحث بالكاتيجوري");
       console.log(err);
+      return [];
     } finally {
       setLoading(false);
     }
@@ -81,6 +83,7 @@ export const SearchProvider = ({ children }) => {
       setLoading(false);
     }
   };
+const clearResults = () => setResults([]);
 
   return (
     <SearchContext.Provider
@@ -91,6 +94,7 @@ export const SearchProvider = ({ children }) => {
         searchByKeyword,
         searchByCategory,
         searchByLocation,
+        clearResults,
       }}
     >
       {children}
