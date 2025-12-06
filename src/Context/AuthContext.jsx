@@ -172,26 +172,36 @@ const updateHospitalProfile = async (data) => {
     fd.append("longitude", data.longitude);
     if (data.profileImage) fd.append("profileImage", data.profileImage);
 
-    await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
+    // تحديث البيانات
+    const updateRes = await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
     });
 
+    // جلب البيانات المحدثة من الـ backend
     const res = await axios.get(`${baseUrl}Hospital/Get-Profile`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
+    // هنا نستخدم res.data.data لأن الـ API بيرجع response بشكل { message, data, ... }
+    const updatedData = res.data.data;
+
     const userData = {
-      ...res.data,
-      profileImage: res.data.imageUrl
-        ? `http://localhost:5000${res.data.imageUrl}`
+      ...updatedData,
+      profileImage: updatedData.imageUrl
+        ? `http://localhost:5000${updatedData.imageUrl}`
         : null,
     };
 
     setUser(userData);
-    return { success: true, updatedUser: userData };
+
+    return {
+      success: res.data.isSucceded,
+      message: res.data.message,
+      updatedUser: userData,
+    };
   } catch (err) {
     console.log("Update profile failed:", err);
     return {
@@ -200,6 +210,7 @@ const updateHospitalProfile = async (data) => {
     };
   }
 };
+
   
 // ---------------------------------------------------
  const changePassword = async (passwordData) => {
