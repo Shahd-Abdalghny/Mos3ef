@@ -1,19 +1,22 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { Home } from './Pages/Home/Home';
-import { SignUp } from './Pages/Auth/SighnUp';
-import { LogIn } from './Pages/Auth/LogIn';
-import { PatientProfile } from './Pages/Patient/PatientProfile';
-import { EditProfile } from './components/EditProfile';
-import { SavedServices } from './components/SavedServices';
-import MyReviews from './components/MyReviews';
+/** @format */
+
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import { Home } from "./Pages/Home/Home";
+import { SignUp } from "./Pages/Auth/SighnUp";
+import { LogIn } from "./Pages/Auth/LogIn";
+import { PatientProfile } from "./Pages/Patient/PatientProfile";
+import { EditProfile } from "./components/EditProfile";
+import { SavedServices } from "./components/SavedServices";
+import MyReviews from "./components/MyReviews";
 import { SideBarMobile } from "./components/SideBarMobile";
-import { SignUpHospital } from './Pages/Auth/SignUpHospital';
-import {DashBoard} from './Pages/Hospital/DashBoard'
-import {MainSectionAtDashBoard } from "./components/MainSectionAtDashBoard";
-import {EditHospitalProfile } from "./components/EditHospitalProfile";
-      import MainLayout from "./layouts/MainLayout";
-      import DashboardLayout from "./layouts/DashboardLayout";
+import { SignUpHospital } from "./Pages/Auth/SignUpHospital";
+import { DashBoard } from "./Pages/Hospital/DashBoard";
+import { MainSectionAtDashBoard } from "./components/MainSectionAtDashBoard";
+import { EditHospitalProfile } from "./components/EditHospitalProfile";
+import MainLayout from "./layouts/MainLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
+import { ServiceCard } from "./components/ServiceCard";
 function App() {
   return (
     <>
@@ -23,6 +26,14 @@ function App() {
           element={
             <MainLayout>
               <Home />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/service-details/:id"
+          element={
+            <MainLayout>
+              <ServiceCard/>
             </MainLayout>
           }
         />
@@ -59,30 +70,9 @@ function App() {
             </MainLayout>
           }
         >
-          <Route
-            index
-            element={
-              <MainLayout>
-                <EditProfile />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="savedServices"
-            element={
-              <MainLayout>
-                <SavedServices />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="myReviews"
-            element={
-              <MainLayout>
-                <MyReviews />
-              </MainLayout>
-            }
-          />
+          <Route index element={<EditProfile />} />
+          <Route path="savedServices" element={<SavedServices />} />
+          <Route path="myReviews" element={<MyReviews />} />
         </Route>
         <Route
           path="/Hospital-DashBoard"
@@ -92,30 +82,9 @@ function App() {
             </DashboardLayout>
           }
         >
-          <Route
-            index
-            element={
-              <DashboardLayout>
-              <MainSectionAtDashBoard/>
-              </DashboardLayout>
-            }
-          />
-          <Route
-            path="update-profile"
-            element={
-              <DashboardLayout>
-                <EditHospitalProfile/>
-              </DashboardLayout>
-            }
-          />
-          <Route
-            path="reviews"
-            element={
-              <DashboardLayout>
-                <MyReviews />
-              </DashboardLayout>
-            }
-          />
+          <Route index element={<MainSectionAtDashBoard />} />
+          <Route path="update-profile" element={<EditHospitalProfile />} />
+          <Route path="reviews" element={<MyReviews />} />
         </Route>
       </Routes>
     </>

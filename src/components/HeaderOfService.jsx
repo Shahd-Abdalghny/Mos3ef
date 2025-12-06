@@ -6,6 +6,7 @@ import { RatingOfServices } from './RatingOfServices'
 export const HeaderOfService = ({ image, name, rating, isOnline }) => {
     return (
         <header className="relative w-full h-[147px] rounded-2xl overflow-hidden shadow-[0px_4px_4px_#7cc1e9]">
+            
             <img
                 src={image}
                 alt={name}

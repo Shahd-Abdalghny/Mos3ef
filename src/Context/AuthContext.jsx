@@ -177,8 +177,8 @@ const updateHospitalProfile = async (data) => {
 
     const userData = {
       ...res.data,
-      profileImage: res.data.profileImage
-        ? `http://localhost:5000${res.data.profileImage}`
+      profileImage: res.data.imageUrl
+        ? `http://localhost:5000${res.data.imageUrl}`
         : null,
     };
 

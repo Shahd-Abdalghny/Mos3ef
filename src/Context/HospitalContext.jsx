@@ -51,9 +51,12 @@ export const HospitalProvider = ({ children }) => {
         `${baseUrl}Hospital/DeleteService/${serviceId}`
       );
 
-      const res = await axios.delete(`${baseUrl}Hospital/DeleteService/${serviceId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axios.delete(
+        `${baseUrl}Hospital/DeleteService/${serviceId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       console.log("✅ Delete response:", res.data);
 
       setAlertMsg("تم حذف الخدمة بنجاح");
@@ -96,7 +99,7 @@ export const HospitalProvider = ({ children }) => {
       console.log("❌ Error response data:", error.response?.data);
       console.log("❌ Error status:", error.response?.status);
       console.log("❌ Error config:", error.config?.data);
-      
+
       setAlertMsg(error.response?.data?.message || "حدث خطأ، حاول مرة أخرى");
       setAlertType("error");
       throw error;
@@ -145,7 +148,34 @@ export const HospitalProvider = ({ children }) => {
       throw error;
     }
   };
- 
+  const getServiceById = async (id) => {
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const response = await axios.get(`${baseUrl}Services/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+       return {
+         success: response.data.isSuccess, 
+         data: response.data.data,
+         message: response.data.message, 
+       };
+    } catch (error) {
+      console.error(`Error fetching service ${id}:`, error);
+       return {
+         success: false,
+         message:
+           error.response?.data?.message ||
+           error.message ||
+           "حدث خطأ في جلب بيانات الخدمة",
+         data: null,
+       };
+    }
+  };
   return (
     <HospitalContext.Provider
       value={{
@@ -159,6 +189,7 @@ export const HospitalProvider = ({ children }) => {
         setAlertType,
         services,
         setServices,
+        getServiceById,
       }}
     >
       {children}

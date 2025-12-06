@@ -130,7 +130,7 @@ const getLocation = () => {
   };
 
   return (
-    <Card className="flex w-[98%] md:w-[80%] items-center justify-center my-2.5 mx-auto bg-white rounded-[20px] shadow-[0px_2px_4px_-2px_#0000001a,0px_4px_6px_-1px_#0000001a] border-0 animate-fade-in [--animation-delay:200ms] ">
+    <Card className="flex w-[95%] md:w-[80%] items-center justify-center my-2.5 mx-auto bg-white rounded-[20px] shadow-[0px_2px_4px_-2px_#0000001a,0px_4px_6px_-1px_#0000001a] border-0 animate-fade-in [--animation-delay:200ms] ">
       <CardContent className="flex flex-col items-center gap-7 px-4 md:px-8 py-6 w-full">
         <div className="justify-end px-4 md:px-8 py-1 flex items-center gap-1 w-full">
           <h1 className="font-Cairo font-bold text-Blue-900 text-xl leading-6 whitespace-nowrap [direction:rtl] tracking-[0]">
@@ -169,7 +169,6 @@ const getLocation = () => {
           </div>
 
           <div className="flex flex-col items-start gap-7 w-full ">
-            {/* اسم المستشفى */}
             <div className="flex flex-col h-[76px] items-end gap-2 w-full">
               <Label className="flex items-center justify-end gap-1 p-1 w-full">
                 <span className="w-fit font-Cairo font-normal text-[#354152] text-base text-left tracking-[0] leading-5 whitespace-nowrap [direction:rtl]">
@@ -185,7 +184,6 @@ const getLocation = () => {
               />
             </div>
 
-            {/* وصف المستشفى */}
             <div className="flex flex-col items-end gap-2 w-full">
               <Label className="flex items-center justify-end gap-1 p-1 w-full">
                 <span className="w-fit font-Cairo font-normal text-[#354152] text-base text-left tracking-[0] leading-5 whitespace-nowrap [direction:rtl]">
@@ -199,7 +197,6 @@ const getLocation = () => {
               />
             </div>
 
-            {/* الموقع الإلكتروني */}
             <div className="flex flex-col h-[76px] items-end gap-2 w-full">
               <Label className="flex items-center justify-end gap-1 p-1 w-full">
                 <span className="w-fit font-Cairo font-normal text-[#354152] text-base text-left tracking-[0] leading-5 whitespace-nowrap [direction:rtl]">
@@ -231,9 +228,7 @@ const getLocation = () => {
                 />
               </div> */}
 
-            {/* رقم الهاتف وساعات العمل */}
             <div className="flex flex-col md:flex-row items-start gap-4 w-full">
-              {/* ساعات العمل */}
               <div className="flex flex-col h-[76px] items-end gap-2 w-full md:w-1/2">
                 <Label className="flex items-center justify-end gap-1 p-1 w-full">
                   <span className="w-fit font-Cairo font-normal text-[#354152] text-base text-left tracking-[0] leading-5 whitespace-nowrap [direction:rtl]">
@@ -249,7 +244,6 @@ const getLocation = () => {
                   placeholder="9:00 ص - 5:00 م"
                 />
               </div>
-              {/* رقم الهاتف */}
               <div className="flex flex-col h-[76px] items-end gap-2 w-full md:w-1/2">
                 <Label className="flex items-center justify-end gap-1 p-1 w-full">
                   <span className="w-fit font-Cairo font-normal text-[#354152] text-base text-left tracking-[0] leading-5 whitespace-nowrap [direction:rtl]">
@@ -266,7 +260,6 @@ const getLocation = () => {
               </div>
             </div>
 
-            {/* المنطقة */}
             <div className="flex flex-col h-[76px] items-end gap-2 w-full">
               <Label className="flex items-center justify-end gap-1 p-1 w-full">
                 <span className="w-fit font-Cairo font-normal text-[#354152] text-base text-left tracking-[0] leading-5 whitespace-nowrap [direction:rtl]">
@@ -283,8 +276,7 @@ const getLocation = () => {
             </div>
             <input type="hidden" {...register("latitude")} />
             <input type="hidden" {...register("longitude")} />
-            {/* الموقع الجغرافي */}
-            <div className="flex flex-col md:flex-row items-end gap-4 w-full">
+            <div className="flex flex-col md:flex-row items-end justify-between gap-4 w-full">
               <div className="flex flex-col h-[76px] items-end gap-2 w-full md:w-2/3">
                 <Label className="flex items-center justify-end gap-1 p-1 w-full">
                   <span className="w-fit font-Cairo font-normal text-[#354152] text-base text-left tracking-[0] leading-5 whitespace-nowrap [direction:rtl]">
@@ -300,7 +292,7 @@ const getLocation = () => {
                 />
               </div>
 
-              <div className="flex w-full md:w-auto mt-4 md:mt-0">
+              <div className="flex w-full md:w-auto mt-5 md:mt-0">
                 <Button
                   onClick={getLocation}
                   type="button"
@@ -315,7 +307,6 @@ const getLocation = () => {
               </div>
             </div>
 
-            {/* تغيير كلمة المرور */}
             <div className="flex flex-col items-end gap-4 w-full">
               <h3 className="font-Cairo font-bold text-Blue-900 text-lg [direction:rtl] w-full text-right">
                 تغيير كلمة المرور
@@ -383,7 +374,6 @@ const getLocation = () => {
               </Button>
             </div>
 
-            {/* زر الحفظ */}
             <Button
               type="submit"
               className="flex h-16 justify-center gap-1 px-8 py-2 w-full bg-Blue-900 rounded-[20px] overflow-hidden shadow-[0px_0px_4px_#f0d5a880] hover:bg-Blue-900/90 transition-colors mt-4"

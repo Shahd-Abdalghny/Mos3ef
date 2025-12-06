@@ -8,8 +8,7 @@ const MainLayout = ({ children }) => {
     <div className="relative bg-cover bg-center flex flex-col items-center w-full">
       <NavBar />
       {children}
-      
-      <ChatBotButton />
+      <ChatBotButton/>
     </div>
     <Footer/>
     </>

@@ -11,7 +11,7 @@ export const PatientProfile = () => {
     <>
     <div className="pt-30 mx-auto px-3 md:px-6 lg:px-36 ">
       <div className="flex justify-center lg:justify-between gap-10 bg-white w-full">
-    <SideBarMobile/>
+          <SideBarMobile/>
         <Outlet />
         <PatientProfileSideBar />
       </div>

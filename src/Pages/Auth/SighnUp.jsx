@@ -94,7 +94,7 @@ export const SignUp = () => {
                   <Input
                     {...register("password", {
                       required: "كلمة المرور مطلوبة",
-                      minLength: { value: 6, message: "الحد الأدنى 8 أحرف" },
+                      minLength: { value: 6, message: "الحد الأدنى 6 أحرف" },
                     })}
                     type={showPassword ? "text" : "password"}
                     placeholder="كلمة المرور"

@@ -8,17 +8,26 @@ import { HeaderOfService } from "./HeaderOfService";
 import { IconButton } from "./IconButton";
 import { ButtonTextAndIcon } from "./ButtonTextAndIcon";
 import { MapPinPlusInside } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const HospitalCard = ({ item }) => {
- 
+   const navigate = useNavigate();
+    const handleClick = () => {
+      navigate(`/service-details/${item.serviceId}`);
+    };
   return (
     <Card
+      onClick={handleClick}
       className="inline-flex flex-col items-center justify-center gap-4 pt-2 pb-3 px-2 bg-white rounded-[20px]  shadow-[0_0_2px_0_rgba(0,0,0,0.95)]"
       data-model-id="4:98"
     >
       <CardContent className="p-0 w-full space-y-4">
         <HeaderOfService
-          image="https://c.animaapp.com/mhrj9xk8kZXmaA/img/image-1.png"
+          image={
+            item.hospitalImage
+              ? `http://localhost:5000${item.hospitalImage}`
+              : "https://media.istockphoto.com/id/1419877131/photo/building-facade-of-a-hospital-in-commercial-and-business-district-under-blue-sky.jpg?s=612x612&w=0&k=20&c=wGxVbFSxljSZb_t_qROE4RwsCgssKbGlqawAtmQ88Ls="
+          }
           name={item.hospitalName}
           rating="5.0"
           isOnline={item.availability == "available" ? true : false}

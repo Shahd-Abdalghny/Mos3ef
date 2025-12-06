@@ -30,7 +30,9 @@ export const LogIn = () => {
   const onSubmit = async (data) => {
     const result = await login(data);
     if (result.success) {
+      
       navigate("/");
+  
     } else {
       alert(result.message || "حدث خطأ أثناء تسجيل الدخول");
     }
