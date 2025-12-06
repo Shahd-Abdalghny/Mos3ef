@@ -13,47 +13,43 @@ export const SearchProvider = ({ children }) => {
 
   const API_URL = "http://localhost:5000/api/Services/search";
 
-  // search by keyword function
+  
   const searchByKeyword = async (keyword, lat, lon) => {
     setLoading(true);
     setError(null);
 
     try {
       const res = await axios.get(API_URL, {
-        params: {
-          keyword,
-          lat,
-          lon,
-        },
+        params: { keyword, lat, lon },
       });
 
-      setResults(res.data);
+      
+      setResults(res.data?.data || []);
     } catch (err) {
       setError("حدث خطأ أثناء البحث");
       console.log(err);
+      setResults([]);
     } finally {
       setLoading(false);
     }
   };
-  // search by category function
+
+  
   const searchByCategory = async (category, lat, lon) => {
     setLoading(true);
     setError(null);
 
     try {
       const res = await axios.get(API_URL, {
-        params: {
-          category,
-          lat,
-          lon,
-        },
+        params: { category, lat, lon },
       });
 
-      setResults(res.data);
-       return res.data; 
+      setResults(res.data?.data || []);
+      return res.data?.data || [];
     } catch (err) {
       setError("حدث خطأ أثناء البحث بالكاتيجوري");
       console.log(err);
+      setResults([]);
       return [];
     } finally {
       setLoading(false);
@@ -67,23 +63,20 @@ export const SearchProvider = ({ children }) => {
 
     try {
       const res = await axios.get(API_URL, {
-        params: {
-          keyword,
-          category,
-          lat,
-          lon,
-        },
+        params: { keyword, category, lat, lon },
       });
 
-      setResults(res.data);
+      setResults(res.data?.data || []);
     } catch (err) {
-      console.log(err);
       setError("حدث خطأ أثناء البحث بالموقع");
+      console.log(err);
+      setResults([]);
     } finally {
       setLoading(false);
     }
   };
-const clearResults = () => setResults([]);
+
+  const clearResults = () => setResults([]);
 
   return (
     <SearchContext.Provider
