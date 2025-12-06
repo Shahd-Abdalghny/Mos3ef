@@ -25,41 +25,49 @@ export const AuthProvider = ({ children }) => {
 
   // ------------------------ Login Function ------------------ //
   const login = async (data) => {
-    try {
-      const res = await axios.post(`${baseUrl}Account/login`, data);
+  try {
+    const res = await axios.post(`${baseUrl}Account/login`, data);
 
-      const token = res.data.token;
-      const userType = res.data.userType; // 0 = Patient, 1 = Hospital
+    
+    const userDataFromApi = res.data?.data;
 
-      setRole(userType);
-      localStorage.setItem("authToken", token);
-      localStorage.setItem("userRole", userType);
+    const token = userDataFromApi?.token;
+    const userType = userDataFromApi?.userType; 
 
-      // ------------------- Fetch user Profile Immediately ------------------- //
-      const profileUrl =
-        userType == 0
-          ? `${baseUrl}Patients/my-profile`
-          : `${baseUrl}Hospital/Get-profile`;
+    setRole(userType);
+    localStorage.setItem("authToken", token);
+    localStorage.setItem("userRole", userType);
 
-      const profileRes = await axios.get(profileUrl, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    // ------------------- Fetch user Profile Immediately ------------------- //
+    const profileUrl =
+      userType === 0
+        ? `${baseUrl}Patients/my-profile`
+        : `${baseUrl}Hospital/Get-profile`;
 
-      const userData = {
-        ...profileRes.data,
-        imageUrl: profileRes.data.imageUrl
-          ? `http://localhost:5000${profileRes.data.imageUrl}`
-          : null,
-      };
+    const profileRes = await axios.get(profileUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      setUser(userData);
-      console.log("Logged in user:", userData);
+    const userProfile = profileRes.data?.data || profileRes.data;
 
-      return { success: true };
-    } catch (error) {
-      return { success: false, message: error.response?.data?.message };
-    }
-  };
+    const finalUserData = {
+      ...userProfile,
+      imageUrl: userProfile?.imageUrl
+        ? `http://localhost:5000${userProfile.imageUrl}`
+        : null,
+    };
+
+    setUser(finalUserData);
+    console.log("Logged in user:", finalUserData);
+
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
+  }
+};
 
   // ------------------------ Check login on App load ------------------ //
   useEffect(() => {
