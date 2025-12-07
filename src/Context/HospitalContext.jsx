@@ -13,25 +13,31 @@ export const HospitalProvider = ({ children }) => {
   const baseUrl = "http://localhost:5000/api/";
 
   // ------------------ Get All Services ------------------
-  const getAllServices = async () => {
-    try {
-      const token = localStorage.getItem("authToken");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+ const getAllServices = async () => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-      const res = await axios.post(`${baseUrl}Hospital/GetAllServices`, {}, { headers });
+    const res = await axios.post(
+      `${baseUrl}Hospital/GetAllServices`,
+      {}, 
+      { headers }
+    );
 
-      // Adjust according to backend response shape
-      const data = Array.isArray(res.data.data) ? res.data.data : res.data;
-      setServices(data);
+    // Always take the list from res.data.data
+    const data = res.data?.data || [];
 
-      return data;
-    } catch (err) {
-      console.error("Error fetching services:", err);
-      setAlertMsg("فشل في جلب الخدمات");
-      setAlertType("error");
-      return [];
-    }
-  };
+    setServices(data);
+
+    return data;
+  } catch (err) {
+    console.error("Error fetching services:", err);
+    setAlertMsg("فشل في جلب الخدمات");
+    setAlertType("error");
+    return [];
+  }
+};
+
 
   // ------------------ Add Service ------------------
   const addHospitalService = async (serviceData) => {
@@ -131,27 +137,32 @@ export const HospitalProvider = ({ children }) => {
 
   // ------------------ Get Service by ID ------------------
   const getServiceById = async (id) => {
-    try {
-      const token = localStorage.getItem("authToken");
+  try {
+    const token = localStorage.getItem("authToken");
 
-      const response = await axios.get(`${baseUrl}Services/${id}`, {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-      });
+    const response = await axios.get(`${baseUrl}Services/${id}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+    });
 
-      return {
-        success: response.data.isSuccess,
-        data: response.data.data,
-        message: response.data.message,
-      };
-    } catch (error) {
-      console.error(`Error fetching service ${id}:`, error);
-      return {
-        success: false,
-        message: error.response?.data?.message || error.message || "حدث خطأ في جلب بيانات الخدمة",
-        data: null,
-      };
-    }
-  };
+    return {
+      success: response.data.isSucceded,  // ✔ matches backend
+      data: response.data.data,          // ✔ contains the service object
+      message: response.data.message,    // ✔ success message
+    };
+  } catch (error) {
+    console.error(`Error fetching service ${id}:`, error);
+
+    return {
+      success: false,
+      message:
+        error.response?.data?.message ||
+        error.message ||
+        "حدث خطأ في جلب بيانات الخدمة",
+      data: null,
+    };
+  }
+};
+
 
   // ------------------ Load services on mount ------------------
   useEffect(() => {
