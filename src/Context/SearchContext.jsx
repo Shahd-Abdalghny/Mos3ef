@@ -26,8 +26,7 @@ export const SearchProvider = ({ children }) => {
           lon,
         },
       });
-
-      setResults(res.data);
+      setResults(res.data.data);
     } catch (err) {
       setError("حدث خطأ أثناء البحث");
       console.log(err);
@@ -49,8 +48,8 @@ export const SearchProvider = ({ children }) => {
         },
       });
 
-      setResults(res.data);
-       return res.data; 
+      setResults(res.data.data);
+       return res.data.data; 
     } catch (err) {
       setError("حدث خطأ أثناء البحث بالكاتيجوري");
       console.log(err);
@@ -75,7 +74,7 @@ export const SearchProvider = ({ children }) => {
         },
       });
 
-      setResults(res.data);
+      setResults(res.data.data);
     } catch (err) {
       console.log(err);
       setError("حدث خطأ أثناء البحث بالموقع");
@@ -95,8 +94,7 @@ const clearResults = () => setResults([]);
         searchByCategory,
         searchByLocation,
         clearResults,
-      }}
-    >
+      }}>
       {children}
     </SearchContext.Provider>
   );

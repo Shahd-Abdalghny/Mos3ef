@@ -61,6 +61,7 @@ const stars = Array(5).fill(
 export const ServiceCard = () => {
   const { id } = useParams();
   const { getServiceById } = useHospital();
+const availableKeywords = ["available", "متاح", "yes", "نعم"];
 
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -161,7 +162,10 @@ export const ServiceCard = () => {
                 ))}
               </div>
 
-              <Online isOnline={true} />
+              <Online
+                isOnline={availableKeywords.includes(service.availability)}
+              />
+
               <HeartButton />
 
               <div className="flex flex-col w-full xs:w-[300px] sm:w-[350px] md:w-[400px] lg:w-[531px] items-end gap-1 absolute top-[80px] xs:top-[100px] sm:top-[120px] md:top-[150px] lg:top-[201px] right-[8px] xs:right-[10px] sm:right-[12px] md:right-[15px] lg:right-[18px]">

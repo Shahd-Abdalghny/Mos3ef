@@ -6,6 +6,7 @@ import axios from "axios";
 // eslint-disable-next-line react-refresh/only-export-components
 export const HospitalContext = createContext();
 
+
 export const HospitalProvider = ({ children }) => {
   const [services, setServices] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
@@ -16,14 +17,11 @@ export const HospitalProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("authToken");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await axios.get(`${baseUrl}Hospital/GetAllServices`, {
+        headers,
+      });
 
-      const res = await axios.post(
-        `${baseUrl}Hospital/GetAllServices`,
-        {},
-        { headers }
-      );
-
-      const data = Array.isArray(res.data) ? res.data : [];
+      const data = Array.isArray(res.data.data) ? res.data.data : [];
       setServices(data);
       return data;
     } catch (err) {
@@ -57,8 +55,7 @@ export const HospitalProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Delete response:", res.data);
-
+      console.log("Delete response:", res.data.data);
       setAlertMsg("تم حذف الخدمة بنجاح");
       setAlertType("success");
       return true;
@@ -77,7 +74,7 @@ export const HospitalProvider = ({ children }) => {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("No auth token found");
 
-      console.log("🟡 Sending data to AddService API:", serviceData);
+      console.log("Sending data to AddService API:", serviceData);
 
       const res = await axios.post(
         `${baseUrl}Hospital/AddService`,
@@ -112,7 +109,7 @@ export const HospitalProvider = ({ children }) => {
     console.log(" Service Data:", serviceData);
     try {
       if (!serviceId) {
-        console.error("❌ Service ID is missing for update!");
+        console.error(" Service ID is missing for update!");
         throw new Error("Service ID is required for update");
       }
       const token = localStorage.getItem("authToken");
@@ -160,7 +157,7 @@ export const HospitalProvider = ({ children }) => {
       });
 
       return {
-        success: response.data.isSuccess,
+        success: response.data.isSucceded,
         data: response.data.data,
         message: response.data.message,
       };
@@ -190,8 +187,7 @@ export const HospitalProvider = ({ children }) => {
         services,
         setServices,
         getServiceById,
-      }}
-    >
+      }}>
       {children}
     </HospitalContext.Provider>
   );

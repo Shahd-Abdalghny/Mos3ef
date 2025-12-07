@@ -28,8 +28,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post(`${baseUrl}Account/login`, data);
 
-      const token = res.data.token;
-      const userType = res.data.userType; // 0 = Patient, 1 = Hospital
+      const token = res.data.data.token;
+      const userType = res.data.data.userType;
 
       setRole(userType);
       localStorage.setItem("authToken", token);
@@ -76,9 +76,9 @@ export const AuthProvider = ({ children }) => {
         .get(profileUrl, { headers: { Authorization: `Bearer ${token}` } })
         .then((res) => {
           const userData = {
-            ...res.data,
-            imageUrl: res.data.imageUrl
-              ? `http://localhost:5000${res.data.imageUrl}`
+            ...res.data.data,
+            imageUrl: res.data.data.imageUrl
+              ? `http://localhost:5000${res.data.data.imageUrl}`
               : null,
           };
           setUser(userData);
@@ -128,13 +128,13 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      const res = await axios.get(`${baseUrl}Patients/my-profile`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await axios.get(`${baseUrl}Hospital/Get-Profile`, {
+        headers: { Authorization: `Bearer ${token} ` },
       });
 
       const userData = {
-        ...res.data,
-        imageUrl: res.data.imageUrl
+        ...res.data.data,
+        profileImage: res.data.data.imageUrl
           ? `http://localhost:5000${res.data.imageUrl}`
           : null,
       };
@@ -149,74 +149,91 @@ export const AuthProvider = ({ children }) => {
       };
     }
   };
-const updateHospitalProfile = async (data) => {
-  try {
-    const token = localStorage.getItem("authToken");
-    const fd = new FormData();
-    fd.append("name", data.name);
-    fd.append("Phone_Number", data.phone_Number);
-    fd.append("address", data.address);
-    fd.append("description", data.description);
-    fd.append("opening_Hours", data.opening_Hours);
-    fd.append("website", data.website);
-    fd.append("region", data.region);
-    fd.append("latitude", data.latitude);
-    fd.append("longitude", data.longitude);
-    if (data.profileImage) fd.append("profileImage", data.profileImage);
+  const updateHospitalProfile = async (data) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const fd = new FormData();
+      fd.append("name", data.name);
+      fd.append("Phone_Number", data.phone_Number);
+      fd.append("address", data.address);
+      fd.append("description", data.description);
+      fd.append("opening_Hours", data.opening_Hours);
+      fd.append("website", data.website);
+      fd.append("region", data.region);
+      fd.append("latitude", data.latitude);
+      fd.append("longitude", data.longitude);
+      if (data.profileImage) fd.append("profileImage", data.profileImage);
 
-    await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const res = await axios.get(`${baseUrl}Hospital/Get-Profile`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const userData = {
-      ...res.data,
-      profileImage: res.data.imageUrl
-        ? `http://localhost:5000${res.data.imageUrl}`
-        : null,
-    };
-
-    setUser(userData);
-    return { success: true, updatedUser: userData };
-  } catch (err) {
-    console.log("Update profile failed:", err);
-    return {
-      success: false,
-      message: err.response?.data?.message || "حدث خطأ",
-    };
-  }
-};
-  
-// ---------------------------------------------------
- const changePassword = async (passwordData) => {
-  try {
-    const token = localStorage.getItem("authToken");
-    const response = await axios.post(
-      `${baseUrl}Account/change-password`,
-      {
-        currentPassword: passwordData.currentPassword,
-        newPassword: passwordData.newPassword,
-        confirmNewPassword: passwordData.confirmNewPassword
-      },
-      {
+      await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
+        },
+      });
+
+      const res = await axios.put(`${baseUrl}Hospital/Update-profile`, fd, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // const userData = {
+      //   ...res.data,
+      //   profileImage: res.data.imageUrl
+      //     ? `http://localhost:5000${res.data.imageUrl}`
+      //     : null,
+      // };
+      // setUser(userData);
+      // return { success: true, updatedUser: userData };
+
+      // البيانات الجديدة اللي رجعت من put
+      const updated = res.data.data;
+
+      const mergedUser = {
+        ...user, // البيانات القديمة
+        ...updated, // البيانات الجديدة
+        imageUrl: updated.imageUrl
+          ? `http://localhost:5000${updated.imageUrl}`
+          : user?.imageUrl,
+      };
+
+      setUser(mergedUser);
+
+      return { success: true, updatedUser: mergedUser };
+    } catch (err) {
+      console.log("Update profile failed:", err);
+      return {
+        success: false,
+        message: err.response?.data?.message || "حدث خطأ",
+      };
+    }
+  };
+
+  // ---------------------------------------------------
+  const changePassword = async (passwordData) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(
+        `${baseUrl}Account/change-password`,
+        {
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+          confirmNewPassword: passwordData.confirmNewPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
-      }
-    );
-    return response.data; // return success response
-  } catch (error) {
-    console.error("Change password error:", error.response?.data);
-    throw error;
-  }
-};
+      );
+      return response.data; // return success response
+    } catch (error) {
+      console.error("Change password error:", error.response?.data);
+      throw error;
+    }
+  };
   // ------------------------ Register Hospital Function ------------------ //
   const registerHospital = async (data) => {
     try {
